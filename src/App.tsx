@@ -1,68 +1,78 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useWindowEvent } from "@mantine/hooks";
 import { fetchWords } from "./API";
-import { Letter, Space } from "./letters";
-import { useWindowEvent } from '@mantine/hooks';
-
-
-// setIndex((prev) => ({
-//   ...prev,
-//   letter: prev.letter + 1,
-// }));
-
-// const data  = ['aa', 'bb', 'cc']
-// const userInput = ['aaaaa', 'bbbbb', 'cccccc', 'acdsffkdsfdskfdsfdgfdhjkf']
-
+import { WordView } from "./wordView";
 
 export const App = () => {
-  const [index, setIndex] = useState({ word: 0, letter: 0 });
-  const [text, setText] = useState<Word[]>([]);
-  const { data, isLoading } = useQuery({
+  const [index, setIndex] = useState(0);
+  const [userInput, setUserInput] = useState<string[]>([""]);
+
+  const { data } = useQuery({
     queryKey: ["words"],
     queryFn: fetchWords,
   });
 
-  useWindowEvent('keydown', handler);
+  const text = data ?? [];
 
   function handler(e: KeyboardEvent) {
-  
+    const BACKSPACE = "Backspace";
+    const SPACE = " ";
+    if (text.length === 0) return;
+    if (e.key === BACKSPACE) {
+      if (index === 0) return;
+      if (userInput[index].length === 0) {
+        if (!checkPrevWord()) {
+          setIndex(index - 1);
+          return;
+        }
+        return;
+      }
+      if (userInput[index].length > 0) {
+        setUserInput((prev) => {
+          const newInput = [...prev];
+          newInput[index] = newInput[index].slice(0, -1);
+          return newInput;
+        });
+      }
+    } else if (e.key === SPACE) {
+      if (userInput[index].length === 0) return;
+      const newIndex = index + 1;
+      setIndex(index + 1);
+      setUserInput((prev) => {
+        const newInput = [...prev];
+        newInput[newIndex] = "";
+        return newInput;
+      });
+    } else {
+      setUserInput((prev) => {
+        const newInput = [...prev];
+        newInput[index] = newInput[index] + e.key;
+        return newInput;
+      });
+    }
   }
 
-  useEffect(() => {
-    if (!isLoading && data) {
-      setText(data);
+  function checkPrevWord(): boolean {
+    if (userInput[index - 1] === text[index - 1]) {
+      return true;
+    } else {
+      return false;
     }
-  }, [data, isLoading]);
+  }
 
-  
-
-  
+  useWindowEvent("keydown", handler);
 
   return (
-    <div className="flex justify-center items-center min-h-screen pl-10 pr-10 bg-yellow-200">
-      <div className="bg-yellow-200">
-        {text?.map((word, wi) => (
-          <span key={wi}>
-            {word.letters.map((item, li) => (
-              <Letter
-                key={`w${wi}-l${li}`}
-                type={item.type}
-                letter={item.letter}
-              />
-            ))}
-
-            {word.extra.map((item, ei) => (
-              <Letter
-                key={`w${wi}-e${ei}`}
-                type={item.type}
-                letter={item.letter}
-              />
-            ))}
-
-            <Space />
-          </span>
-        ))}
-      </div>
+    <div className="p-6">
+      {text.map((word, wi) => (
+        <WordView
+          key={wi}
+          word={word}
+          typed={userInput[wi] ?? ""}
+          isActive={wi === index}
+        />
+      ))}
     </div>
   );
 };
