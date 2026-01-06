@@ -4,19 +4,18 @@ import { useWindowEvent } from "@mantine/hooks";
 import { fetchWords } from "./API";
 import { WordView } from "./WordView";
 import { Button } from "@mantine/core";
-import resLogo from "./assets/resLogo.png";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { CountdownTimer } from "./Timer";
 import { queryClient } from "./main";
-import { ShowResult } from "./showResult";
+import { ShowResult } from "./ShowResult";
 
 export const App = () => {
   const [index, setIndex] = useState(0);
   const [userInput, setUserInput] = useState<string[]>([""]);
   const [hasStarted, setHasStarted] = useState(false);
+  const [isFinished, setFinished] = useState(false);
   let isFirstInput = true;
-  let isFinished = false;
-  
+
   useWindowEvent("keydown", handler);
   const BACKSPACE = "Backspace";
   const SPACE = " ";
@@ -37,6 +36,8 @@ export const App = () => {
   const { data: text = [] } = useQuery({
     queryKey: ["words"],
     queryFn: fetchWords,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   function handler(e: KeyboardEvent) {
@@ -45,7 +46,10 @@ export const App = () => {
       restart();
       return;
     }
-    if(isFirstInput){
+    if (isFinished) {
+      return;
+    }
+    if (isFirstInput) {
       setHasStarted(true);
       isFirstInput = false;
     }
@@ -95,14 +99,24 @@ export const App = () => {
       queryKey: ["words"],
     });
     setHasStarted(false);
-    isFirstInput= true;
-    isFinished=false;
+    isFirstInput = true;
+    setFinished(false);
   };
 
   return (
-    <div className="flex justify-center flex-col min-h-screen items-center lg:pl-150 lg:pr-150 md:pl-20 md:pr-20 p-20 sm:pl-10 sm:pr-10">
-      <CountdownTimer isRunning={hasStarted} onFinish={()=> {isFinished = true}} />
-      <ShowResult worda={text} typed={userInput} seconds={60} isFinished={isFinished}/>
+    <div className="bg-[#3b3b3b] flex justify-center flex-col min-h-screen items-center lg:pl-100 lg:pr-100 md:pl-20 md:pr-20 p-20 sm:pl-10 sm:pr-10">
+      <CountdownTimer
+        isRunning={hasStarted}
+        onFinish={() => {
+          setFinished(true);
+        }}
+      />
+      <ShowResult
+        worda={text}
+        typed={userInput}
+        seconds={30}
+        ifFinished={isFinished}
+      />
       <div className="flex flex-wrap">
         {text.map((word, wordIndex) => (
           <WordView
@@ -112,12 +126,13 @@ export const App = () => {
           />
         ))}
       </div>
-      <Button
-        className="p-2 bg-gray-100 rounded-full hover:bg-gray-200"
-        onClick={restart}
-      >
-        <ArrowPathIcon className="w-6 h-6 text-gray-700" />
+      <Button className="p-2 rounded-full bg-[#3b3b3b] mt-8 flex" onClick={restart}>
+        <ArrowPathIcon className="w-6 h-6 text-[#e03131] hover:text-amber-50 transition-colors duration-200 ease-in-out" />
       </Button>
+      <footer className="flex flex-row w-34 justify-between items-center ">
+        <p className="bg-gray-500 w-10 h-5 rounded-sm text-center text-sm text-[#3b3b3b]"> TAB </p>
+        <p className="text-gray-500">- restart test</p>
+      </footer>
     </div>
   );
 };

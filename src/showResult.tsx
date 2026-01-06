@@ -2,10 +2,10 @@ type Props = {
   worda: string[];
   typed: string[];
   seconds: number;
-  isFinished: boolean;
+  ifFinished: boolean;
 };
 
-export function ShowResult({ worda, typed, seconds, isFinished }: Props) {
+export function ShowResult({ worda, typed, seconds, ifFinished }: Props) {
   let count = 0;
 
   worda.forEach((word, index) => {
@@ -14,9 +14,9 @@ export function ShowResult({ worda, typed, seconds, isFinished }: Props) {
     }
   });
 
-  if (isFinished) {
+  if (ifFinished) {
    return (
-    <span>
+    <span className="text-4xl mb-4 text-[#D3DAD9] font-bold">
       You wrote {count} words in {seconds} seconds
     </span>
   );

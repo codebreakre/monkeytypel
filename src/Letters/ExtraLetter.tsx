@@ -1,6 +1,6 @@
 export function ExtraLetter({ children }: { children: React.ReactNode }) {
   return (
-    <span className="text-red-300 underline font-bold text-2xl">
+    <span className="text-gray-900 underline text-2xl">
       {children}
     </span>
   );

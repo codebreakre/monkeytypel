@@ -16,7 +16,7 @@ function WordViewBase({ word, typed }: Props) {
       {letters.map((ch, i) => {
         let type: string = "gray";
         if (i < typedLetters.length) {
-          type = typedLetters[i] === ch ? "green" : "red";
+          type = typedLetters[i] === ch ? "white" : "#e03131";
         }
         return (
           <Letter key={i} color={type}>

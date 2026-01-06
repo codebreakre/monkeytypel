@@ -1,3 +1,4 @@
+
 export function Letter({
   color,
   children,
@@ -5,7 +6,6 @@ export function Letter({
   color: string;
   children: React.ReactNode;
 }) {
-  return (
-    <span className={`text-${color}}-500 font-bold text-2xl`}>{children}</span>
-  );
+  return <span style={{color}} className={`font-bold text-2xl`}>{children}</span>
+
 }

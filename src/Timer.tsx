@@ -6,12 +6,12 @@ type Props = {
 };
 
 export function CountdownTimer({ isRunning, onFinish }: Props) {
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(30);
 
   // reset when stopped
   useEffect(() => {
     if (!isRunning) {
-      setTimeLeft(5);
+      setTimeLeft(30);
     }
   }, [isRunning]);
 
@@ -36,10 +36,11 @@ export function CountdownTimer({ isRunning, onFinish }: Props) {
   useEffect(() => {
     if (timeLeft === 0 && isRunning) {
       onFinish();
+
     }
   }, [timeLeft, isRunning, onFinish]);
 
-  if (!isRunning) return null;
+   if (!isRunning || timeLeft === 0) return null;
 
-  return <div>{timeLeft}</div>;
+  return <div className="text-4xl mb-4 text-[#D3DAD9] font-bold">{timeLeft}</div>;
 }
