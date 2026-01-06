@@ -8,14 +8,13 @@ type Props = {
 export function CountdownTimer({ isRunning, onFinish }: Props) {
   const [timeLeft, setTimeLeft] = useState(30);
 
-  // reset when stopped
+
   useEffect(() => {
     if (!isRunning) {
       setTimeLeft(30);
     }
   }, [isRunning]);
 
-  // run timer
   useEffect(() => {
     if (!isRunning) return;
 
@@ -32,7 +31,6 @@ export function CountdownTimer({ isRunning, onFinish }: Props) {
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  // notify parent
   useEffect(() => {
     if (timeLeft === 0 && isRunning) {
       onFinish();
