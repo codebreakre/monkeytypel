@@ -1,0 +1,3 @@
+1. Space component iig ustgaj css eer shiideh shiidel oloh.
+2. Letter component iig neg bolgoh. className gedeg 1 prop avah. damjuulahdaa helper function ashiglaj bolno.
+3. learn Raect key

@@ -1,36 +1,34 @@
 import React from "react";
-import { Letter, Space } from "./letters";
-
-type LetterType = "correct" | "false" | "default" | "extra";
+import { Letter } from "./Letters/Letter";
+import { ExtraLetter } from "./Letters/ExtraLetter";
 
 type Props = {
   word: string;
   typed: string;
-  isActive: boolean;
 };
 
-function WordViewBase({ word, typed, isActive }: Props) {
+function WordViewBase({ word, typed }: Props) {
   const letters = word.split("");
   const typedLetters = typed.split("");
 
   return (
-    <span className={isActive ? "" : ""}>
+    <span className="mr-5">
       {letters.map((ch, i) => {
-        let type: LetterType = "default";
+        let type: string = "gray";
         if (i < typedLetters.length) {
-          type = typedLetters[i] === ch ? "correct" : "false";
+          type = typedLetters[i] === ch ? "green" : "red";
         }
-        return <Letter key={i} type={type} letter={ch} />;
+        return (
+          <Letter key={i} color={type}>
+            {ch}
+          </Letter>
+        );
       })}
 
-      {typedLetters.slice(letters.length).map((ch, i) => (
-        <Letter key={`e-${i}`} type="extra" letter={ch} />
-      ))}
-
-      <Space />
+      {typedLetters.slice(letters.length).map((ch, i) => {
+        return <ExtraLetter key={`e-${i}`}>{ch}</ExtraLetter>;
+      })}
     </span>
   );
 }
-
-// Memo: rerender only if word/typed/isActive changed
 export const WordView = React.memo(WordViewBase);
