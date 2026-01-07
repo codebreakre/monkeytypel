@@ -1,11 +1,16 @@
+import type { PropsWithChildren } from "react";
+
+interface LetterProps extends PropsWithChildren {
+  className?: string;
+}
 
 export function Letter({
-  color,
+  className = '',
   children,
-}: {
-  color: string;
-  children: React.ReactNode;
-}) {
-  return <span style={{color}} className={`font-bold text-2xl`}>{children}</span>
-
+}: LetterProps) {
+  return (
+    <span className={`text-2xl ${className}`}>
+      {children}
+    </span>
+  )
 }

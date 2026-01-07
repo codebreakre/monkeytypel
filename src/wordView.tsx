@@ -1,34 +1,74 @@
 import React from "react";
 import { Letter } from "./Letters/Letter";
-import { ExtraLetter } from "./Letters/ExtraLetter";
+// import { ExtraLetter } from "./Letters/ExtraLetter";
+
+import { getLongest, getClassName } from './utils';
 
 type Props = {
   word: string;
   typed: string;
+  isAcitve: boolean
 };
 
-function WordViewBase({ word, typed }: Props) {
-  const letters = word.split("");
-  const typedLetters = typed.split("");
+export function WordView({ word, typed, isAcitve }: Props) {
+  if (!typed) {
+    return (
+      <span className='text-2xl mr-5'>
+        {word}
+      </span>
+    )
+  }
 
+  const longest = getLongest(word, typed);
+  let typedLength : number = 0;
+  if(isAcitve) {
+      typedLength = typed.length;
+  }
+  if(!isAcitve) {
   return (
     <span className="mr-5">
-      {letters.map((ch, i) => {
-        let type: string = "gray";
-        if (i < typedLetters.length) {
-          type = typedLetters[i] === ch ? "white" : "#e03131";
-        }
-        return (
-          <Letter key={i} color={type}>
-            {ch}
-          </Letter>
-        );
-      })}
-
-      {typedLetters.slice(letters.length).map((ch, i) => {
-        return <ExtraLetter key={`e-${i}`}>{ch}</ExtraLetter>;
-      })}
+      {
+        longest.split('').map((character, characterIndex) => {
+          const className = getClassName(word[characterIndex], typed[characterIndex]);
+          return (
+            <Letter key={characterIndex} className={className}>
+              {character}
+            </Letter>
+          )
+        })
+      }
     </span>
-  );
+  )
 }
-export const WordView = React.memo(WordViewBase);
+  if(isAcitve){
+    return (
+      <>
+      <span className="border-r-2 border-l-amber-200">
+        {
+        typed.split('').map((character, characterIndex) => {
+          const className = getClassName(word[characterIndex], typed[characterIndex]);
+          return (
+            <Letter key={characterIndex} className={className}>
+              {character}
+            </Letter>
+          )
+        })
+      }
+      </span>
+      <span>
+        {
+        word.slice(typedLength).split('').map((character, characterIndex) => {
+          console.log(typedLength)
+          const className = getClassName(word[characterIndex], typed[characterIndex]);
+          return (
+            <Letter key={characterIndex} className={className}>
+              {character}
+            </Letter>
+          )
+        })
+      }
+      </span>
+      </>
+    )
+  }
+}
