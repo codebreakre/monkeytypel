@@ -134,14 +134,14 @@ export const App = () => {
         ifFinished={isFinished}
       />
       <div className="flex flex-wrap text-gray-500 gap-x-2">
-        { 
+        {
            text.map((word, wordIndex) => (
             
           <WordView
             key={wordIndex}
             word={word}
             typed={userInput[wordIndex] ?? ""}
-            isAcitve  ={wordIndex === index}
+            isActive={index === wordIndex}
           />
         ))}
       </div>
