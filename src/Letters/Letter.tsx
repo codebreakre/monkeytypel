@@ -9,7 +9,7 @@ export function Letter({
   children,
 }: LetterProps) {
   return (
-    <span className={`text-2xl ${className}`}>
+    <span className={` ${className}`}>
       {children}
     </span>
   )

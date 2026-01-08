@@ -120,7 +120,8 @@ export const App = () => {
   }
 
   return (
-    <div className="bg-[#3b3b3b] flex justify-center flex-col min-h-screen items-center lg:pl-100 lg:pr-100 md:pl-20 md:pr-20 p-20 sm:pl-10 sm:pr-10">
+    <div className="relative bg-[#3b3b3b] flex justify-between flex-col min-h-screen items-center lg:pl-100 lg:pr-100 md:pl-20 md:pr-20 p-20 sm:pl-10 sm:pr-10 ">
+      <div>
       <CountdownTimer
         isRunning={hasStarted}
         onFinish={() => {
@@ -133,7 +134,9 @@ export const App = () => {
         seconds={30}
         ifFinished={isFinished}
       />
-      <div className="flex flex-wrap text-gray-500 gap-x-2">
+      </div>
+      <div className="relative overflow-hidden w-4/5 h-[190px]">
+      <div className="flex flex-wrap text-gray-500 gap-x-2 absolute  overflow-hidden top-0 left-0 text-[40px] transition-transform ease-out duration-200 ">
         {
            text.map((word, wordIndex) => (
             
@@ -145,6 +148,8 @@ export const App = () => {
           />
         ))}
       </div>
+      </div>
+      <div>
       <Button
         className="p-2 rounded-full bg-[#3b3b3b] mt-8 flex"
         onClick={restart}
@@ -158,7 +163,9 @@ export const App = () => {
         </p>
         <p className="text-gray-500">- restart test</p>
       </footer>
+      </div>
 
     </div>
+
   );
 };

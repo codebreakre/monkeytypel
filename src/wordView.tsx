@@ -11,7 +11,7 @@ type Props = {
 
 export function WordView({ word, typed, isActive }: Props) {
   if (!typed && !isActive) {
-    return <span className="text-2xl  ">{word}</span>;
+    return <span className="  ">{word}</span>;
   }
   const longest = getLongest(word, typed);
   const wordLength = word.length;
@@ -21,7 +21,7 @@ export function WordView({ word, typed, isActive }: Props) {
     }
     
     return (
-      <span className={`text-2xl ${wordStyle}`}>
+      <span className={` ${wordStyle}`}>
         {longest.split("").map((character, characterIndex) => {
             const isCurrent = typed.length === characterIndex;
           if (characterIndex < wordLength) {
