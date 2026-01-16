@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 type Props = {
   isRunning: boolean;
   onFinish: () => void;
+  time: number;
 };
 
-export function CountdownTimer({ isRunning, onFinish }: Props) {
-  const [timeLeft, setTimeLeft] = useState(30);
+export function CountdownTimer({ isRunning, onFinish, time }: Props) {
+  const [timeLeft, setTimeLeft] = useState(time);
 
 
   useEffect(() => {
     if (!isRunning) {
-      setTimeLeft(30);
+      setTimeLeft(time);
     }
   }, [isRunning]);
 
@@ -36,7 +37,7 @@ export function CountdownTimer({ isRunning, onFinish }: Props) {
       onFinish();
 
     }
-  }, [timeLeft, isRunning, onFinish]);
+  }, [timeLeft, isRunning]);
 
    if (!isRunning || timeLeft === 0) return null;
 

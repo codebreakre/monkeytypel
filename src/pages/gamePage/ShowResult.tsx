@@ -1,3 +1,6 @@
+import { IconCurrencyEthereum } from "@tabler/icons-react";
+import type {Result} from '../../types'
+
 type Props = {
   worda: string[];
   typed: string[];
@@ -6,14 +9,15 @@ type Props = {
 };
 
 export function ShowResult({ worda, typed, seconds, ifFinished }: Props) {
-  let count = 0;
+
+    let count = 0;
 
   worda.forEach((word, index) => {
     if (word === typed[index]) {
       count++;
     }
   });
-
+  
   if (ifFinished) {
    return (
     <span className="text-4xl mb-4 text-[#D3DAD9] font-bold">

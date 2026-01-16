@@ -1,4 +1,6 @@
-import { Letter } from "./Letters/Letter";
+import { Letter } from "./letters/Letter";
+import { forwardRef } from "react";
+import type {Ref} from "react";
 // import { ExtraLetter } from "./Letters/ExtraLetter";
 
 import { getLongest, getClassName } from "./utils";
@@ -9,9 +11,9 @@ type Props = {
   isActive: boolean;
 };
 
-export function WordView({ word, typed, isActive }: Props) {
+export const WordView = forwardRef<HTMLSpanElement, Props>(({ word, typed, isActive }, ref :Ref<HTMLSpanElement>) => {
   if (!typed && !isActive) {
-    return <span className="  ">{word}</span>;
+    return <span ref={ref} className="  ">{word}</span>;
   }
   const longest = getLongest(word, typed);
   const wordLength = word.length;
@@ -21,7 +23,7 @@ export function WordView({ word, typed, isActive }: Props) {
     }
     
     return (
-      <span className={` ${wordStyle}`}>
+      <span ref={ref} className={` ${wordStyle}`}>
         {longest.split("").map((character, characterIndex) => {
             const isCurrent = typed.length === characterIndex;
           if (characterIndex < wordLength) {
@@ -40,3 +42,4 @@ export function WordView({ word, typed, isActive }: Props) {
       </span>
     );  
 }
+)
