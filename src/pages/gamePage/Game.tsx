@@ -186,86 +186,79 @@ export const Game = () => {
       {/* text heseg */}
       <div className="w-4/5 flex flex-col  justify-between h-full items-center mt-5">
         <div className="h-1/2 flex flex-col justify-between items-center w-full ">
-          <div className={`mt-10 flex flex-row flex bg-black rounded-lg items-center transition-all ease-in-out duration-300 ${
-                gameOption === "time" ? "w-[410px]" : "w-[360px]"
-              } `}>
+          <div
+            className={`mt-10 flex flex-row flex bg-black rounded-lg overflow-hidden items-center transition-[width] ease-in-out duration-300 ${
+              gameOption === "time" ? "w-[410px]" : "w-[360px]"
+            } `}
+          >
             {gameOptions.map((option) => {
               const isActive = option === gameOption;
               return (
                 <button
                   key={option}
-                  onClick={() => {setGameOption(option);
-             
-
+                  onClick={() => {
+                    setGameOption(option);
+                    restart();
                   }}
                   disabled={isActive}
                   className={`
                   px-4 py-2 rounded-lg text-sm transition-all  hover:text-white ease-in-out duration-300
-                  ${
-                    isActive
-                      ? "text-yellow-400 "
-                      : "text-gray-500 "
-                  }
+                  ${isActive ? "text-yellow-400 " : "text-gray-500 "}
                   disabled:cursor-default
                 `}
-                >{option}</button>
+                >
+                  {option}
+                </button>
               );
             })}
             <p className="text-white text-2xl">I</p>
-            {gameOption === 'time' ? 
-              <div>
-                {
-                  timeOptions.map((option)=>{
-                    const isActive = option === time;
-                    
-                    return(
-                      <button
+            {gameOption === "time" ? (
+              <div className="shrink-0 overflow-hidden">
+                {timeOptions.map((option) => {
+                  const isActive = option === time;
+
+                  return (
+                    <button
                       key={option}
-                      onClick={()=> setTime(option)}
+                      onClick={() => {
+                        setTime(option);
+                        restart();
+                      }}
                       className={`
                   px-4 py-2 rounded-lg text-sm transition-all hover:text-white ease-in-out duration-300
-                  ${
-                    isActive
-                      ? "text-yellow-400 "
-                      : "text-gray-500"
-                  }
+                  ${isActive ? "text-yellow-400 " : "text-gray-500"}
                   disabled:cursor-default
                  
                 `}
-                      
-                      >
-                        {option}
-                      </button>
-                    )
-                  })
-                } 
-              </div> :
-              <div >
-                  {
-                  wordNumberOptions.map((option)=>{
-                    const isActive = option === wordNumber;
-                    return(
-                      <button
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div>
+                {wordNumberOptions.map((option) => {
+                  const isActive = option === wordNumber;
+                  return (
+                    <button
                       key={option}
-                      onClick={()=> setWordNumber(option)}
+                      onClick={() => {
+                        setWordNumber(option);
+                        restart();
+                      }}
                       className={`
                   px-4 py-2 rounded-lg text-sm transition-all  hover:text-white  ease-in-out duration-300
-                  ${
-                    isActive
-                      ? "text-yellow-400"
-                      : "text-gray-500 "
-                  }
+                  ${isActive ? "text-yellow-400" : "text-gray-500 "}
                   disabled:cursor-default
                 `}
-                      
-                      >
-                        {option}
-                      </button>
-                    )
-                  })
-                } 
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
               </div>
-            }
+            )}
           </div>
           <div className="relative w-full flex flex-col">
             <div className=" absolute left-0 top-[-50px] ">

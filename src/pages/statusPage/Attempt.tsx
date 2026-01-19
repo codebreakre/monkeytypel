@@ -27,7 +27,7 @@ export const Attempt = ({
     <Accordion.Item className={classes.item} value={`result ${index}`} style={{ backgroundColor: "#3b3b3b" }}>
       <Accordion.Control className="flex flex-row w-full  ">
         <div className="w-full flex flex-row justify-between items-center">
-          {wpm < 60 ? 
+          {wpm < 30 ? 
           <Badge color="yellow">Not Bad</Badge> :
           <Badge color="green">Excelent</Badge>
           }
