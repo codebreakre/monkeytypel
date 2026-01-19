@@ -44,9 +44,9 @@ export const Login = () => {
   };
 
   return (
-    <>
+    <><div className="bg-[#3b3b3b] ">
       <button onClick={()=> navigate('/')}>back</button>
-      <div className="h-screen flex items-center justify-center gap-2 bg-gray-500 ">
+      <div className="h-screen flex items-center justify-center gap-2 bg-[#3b3b3b] ">
         <input
           type="text"
           onChange={(e) => (enteringName = e.target.value)}
@@ -54,6 +54,7 @@ export const Login = () => {
           className="bg-amber-50 w-3/20 border-1 rounded-sm font-bold text-gray-800"
         />
         <button onClick={enterHandler}>enter</button>
+      </div>
       </div>
     </>
   );
