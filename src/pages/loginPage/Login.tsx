@@ -46,17 +46,18 @@ export const Login = () => {
   };
 
   return (
-    <>
-      <div className="bg-[#3b3b3b] h-screen w-screen flex justify-around items-center">
-        <section className="w-70">
-          <p className="p-0, m-0 flex flex-row flex-start text-gray-50">
+    <><div className='bg-[#323437] h-full w-full flex justify-center items-center font-["JetBrains_Mono"]  tracking-tight leading-tights font-medium '>
+      <div className="w-384 h-3/4 flex justify-around items-center">
+        
+        <section className="w-68">
+          <p className="p-0, mb-1 flex flex-row flex-start text-[#646669]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6"
+              className="size-5"
             >
               <path
                 strokeLinecap="round"
@@ -64,42 +65,42 @@ export const Login = () => {
                 d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
               />
             </svg>
-            Register
+            register
           </p>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
             <input
               type="text"
               placeholder="username"
-              className="bg-black text-gray-50 rounded-md pl-2 h-7 w-full"
+              className="bg-[#2c2e31] text-[white] rounded-lg pl-2 h-9 w-full placeholder-[#646669]  focus:outline-none focus:ring-2 focus:ring-white caret-amber-300 "
             />
             <input
               type="email"
               placeholder="email"
-              className="bg-black text-gray-50 rounded-md pl-2 h-7 w-full"
+              className="bg-[#2c2e31] text-[white]  rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
             />
             <input
               type="email"
               placeholder="verify email"
-              className="bg-black text-gray-50 rounded-md pl-2 h-7 w-full"
+              className="bg-[#2c2e31] text-[white]  rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
             />
             <input
               type="password"
               placeholder="password"
-              className="bg-black text-gray-50 rounded-md pl-2 h-7 w-full"
+              className="bg-[#2c2e31] text-[white]  rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
             />
             <input
               type="password"
               placeholder="verify password"
-              className="bg-black text-gray-50 rounded-md pl-2 h-7 w-full"
+              className="bg-[#2c2e31] text-[white] rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
             />
-            <button className="bg-black text-gray-50 rounded-md h-7 flex flex-row justify-center">
+            <button className="bg-[#303235] text-[#646669] rounded-lg h-9 flex flex-row justify-center items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6"
+                className="size-5"
               >
                 <path
                   strokeLinecap="round"
@@ -112,13 +113,13 @@ export const Login = () => {
           </div>
         </section>
 
-        <section className="flex flex-col w-70 ">
-          <p className="p-0, m-0 flex flex-row flex-start text-gray-50">
+        <section className="flex flex-col w-68 ">
+          <p className="p-0 mb-1 flex flex-row flex-start text-[#646669]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="size-6"
+              className="size-5"
             >
               <path
                 fillRule="evenodd"
@@ -129,7 +130,7 @@ export const Login = () => {
             login
           </p>
           <div className="text-white flex flex-row justify-between ">
-            <button className="w-47/100 h-10 bg-black flex justify-center items-center rounded-md">
+            <button className="w-47/100 h-10 bg-[#2c2e31] flex justify-center items-center rounded-lg text-[#D1D0C5]" >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -140,7 +141,7 @@ export const Login = () => {
                 <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z" />
               </svg>
             </button>
-            <button className="w-47/100  h-10 bg-black flex justify-center items-center rounded-md">
+            <button className="w-47/100  h-10 bg-[#2c2e31] flex justify-center items-center rounded-lg text-[#D1D0C5]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -152,22 +153,22 @@ export const Login = () => {
               </svg>
             </button>
           </div>
-          <div className="flex flex-row justify-between items-center text-white ">
-            <p className="w-42/100 h-1 bg-black rounded-md"></p>
+          <div className="flex flex-row justify-between items-center text-[#D1D0C5]">
+            <p className="w-42/100 h-1 bg-[#2c2e31] rounded-md"></p>
             <p>or</p>
-            <p className="w-42/100 h-1 bg-black rounded-md"></p>
+            <p className="w-42/100 h-1 bg-[#2c2e31] rounded-md"></p>
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
             <input
               type="text"
-              placeholder="username"
-              className="bg-black text-gray-50 rounded-md pl-2 h-7 w-full"
+              placeholder="email"
+              className="bg-[#2c2e31] text-[white] rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
               onChange={(e) => enteringName = e.target.value}
             />
             <input
-              type="email"
-              placeholder="email"
-              className="bg-black text-gray-50 rounded-md pl-2 h-7 w-full"
+              type="password"
+              placeholder="password"
+              className="bg-[#2c2e31] text-[white] rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
             />
             <svg
               viewBox="0 0 20 20"
@@ -180,7 +181,7 @@ export const Login = () => {
                 clipRule="evenodd"
               />
             </svg>
-            <label className="flex items-center gap-2 cursor-pointer select-none text-gray-200">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-[#D1D0C5]">
               <input type="checkbox" className="peer sr-only" />
 
               <span
@@ -202,17 +203,17 @@ export const Login = () => {
                 </svg>
               </span>
 
-              <span>Remember me</span>
+              <span>remember me</span>
             </label>
 
             <button 
             onClick={enterHandler}
-            className="bg-black text-gray-50 rounded-md h-7 flex flex-row justify-center">
+            className="bg-[#2c2e31] text-[#D1D0C5] rounded-lg h-9 flex flex-row justify-center items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="size-6"
+                className="size-5"
               >
                 <path
                   fillRule="evenodd"
@@ -224,6 +225,8 @@ export const Login = () => {
             </button>
           </div>
         </section>
+        
+      </div>
       </div>
     </>
   );

@@ -54,7 +54,7 @@ export const Status = () => {
     
   return (
     <>
-      <div className="w-screen h-screen bg-[#3b3b3b]">
+      <div className="w-full h-full bg-[#3b3b3b]">
         <div className="fixed top-0 left-0 w-3/10 h-full ">
           <Container
             size="sm"
