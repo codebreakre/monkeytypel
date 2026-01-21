@@ -1,6 +1,3 @@
-import { IconCurrencyEthereum } from "@tabler/icons-react";
-import type {Result} from '../../types'
-
 type Props = {
   worda: string[];
   typed: string[];

@@ -24,7 +24,7 @@ export const WordView = forwardRef<HTMLSpanElement, Props>(({ word, typed, isAct
     
     return (
       <span ref={ref} className={` ${wordStyle}`}>
-        {longest.split("").map((character, characterIndex) => {
+        {longest.split("").map((_, characterIndex) => {
             const isCurrent = typed.length === characterIndex;
           if (characterIndex < wordLength) {
             const style = getClassName(
