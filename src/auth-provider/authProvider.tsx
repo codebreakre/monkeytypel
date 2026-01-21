@@ -12,6 +12,7 @@ type AuthContextValue = {
   register: (userObj: User) => boolean;
   login: (userObj: User) => void;
   logout: () => void;
+  updateCurrentUser: (user: User) => void;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -57,8 +58,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCurrentUser(null);
      console.log("logoutWorked")
   };
+
+  const updateCurrentUser = (userObj:User) => {
+    setCurrentUser(userObj);
+    localStorage.currentUser = JSON.stringify(userObj);
+  }
   return (
-    <AuthContext.Provider value={{ register, currentUser, login, logout }}>
+    <AuthContext.Provider value={{ register, currentUser, login, logout, updateCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );

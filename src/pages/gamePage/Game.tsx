@@ -6,29 +6,31 @@ import { ShowResult } from "./ShowResult";
 import type { Result } from "../../types";
 import { callWords } from "../../api/hooks/callWords";
 import { ignoredKeys } from "./arrayValues";
+import { useAuth } from "../../auth-provider/authProvider";
 
 const timeOptions = [15, 30, 60, 90, 120];
 const wordNumberOptions = [10, 25, 50, 100];
 const gameOptions = ["time", "words"];
 
 export const Game = () => {
+  const { currentUser, updateCurrentUser } = useAuth();
   const [time, setTime] = useState(30);
   const [wordNumber, setWordNumber] = useState(100);
   const [gameOption, setGameOption] = useState("time");
+  const [hasStarted, setHasStarted] = useState(false);
+  const [isFinished, setFinished] = useState(false);
+
   const { data: text = [], isPending, refetch } = callWords(wordNumber);
   const [index, setIndex] = useState(0);
   const [userInput, setUserInput] = useState<string[]>([""]);
-  const [hasStarted, setHasStarted] = useState(false);
-  const [isFinished, setFinished] = useState(false);
   const wordsRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const caretRef = useRef<HTMLDivElement>(null);
 
   const saveResult = () => {
-    let currentUser = localStorage.currentUser;
     if (!currentUser) {
       setFinished(true);
       return;
     }
-    currentUser = JSON.parse(currentUser);
     let correctWord = 0;
     text.forEach((word, index) => {
       if (word === userInput[index]) {
@@ -45,7 +47,7 @@ export const Game = () => {
     };
 
     currentUser.results.push(result);
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    updateCurrentUser(currentUser);
     setFinished(true);
   };
 
@@ -127,125 +129,150 @@ export const Game = () => {
   }
 
   useLayoutEffect(() => {
-    const activeSpan = wordsRefs.current[index];
-    if (activeSpan) {
-      activeSpan.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [index]);
+    const activeWord = wordsRefs.current[index];
+    if (!activeWord) return;
+    activeWord.scrollIntoView({ behavior: "smooth", block: "center" });
+
+
+    const activeLetter = activeWord.children[
+      userInput[index]?.length ?? 0
+    ] as HTMLElement;
+
+    if ( !caretRef.current) return;
+    if(!activeLetter) {
+    const parentRect = activeWord!.getBoundingClientRect();
+      caretRef.current.style.transform = `
+    translate(${ parentRect.left + parentRect.width}px,
+              ${ parentRect.top}px)
+  `; 
+    } else {
+
+    const rect = activeLetter.getBoundingClientRect();
+    const parentRect = activeWord.parentElement!.getBoundingClientRect();
+
+    caretRef.current.style.transform = `
+    translate(${rect.left - parentRect.left}px,
+              ${rect.top - parentRect.top}px)
+  `;}
+   
+  }, [index, userInput]);
 
   return (
-    
-      <div className="w-full flex flex-col  justify-between h-full items-center mt-5">
-        <div className="h-1/2 flex flex-col justify-between items-center w-full ">
-          <div
-            className={`mt-10 flex flex-row flex bg-black rounded-lg overflow-hidden items-center transition-[width] ease-in-out duration-300 ${
-              gameOption === "time" ? "w-[430px]" : "w-[380px]"
-            } `}
-          >
-            {gameOptions.map((option) => {
-              const isActive = option === gameOption;
-              return (
-                <button
-                  key={option}
-                  onClick={() => {
-                    setGameOption(option);
-                    restart();
-                  }}
-                  disabled={isActive}
-                  className={`
+    <div className="w-full flex flex-col  justify-between h-full items-center mt-5">
+      <div className="h-1/2 flex flex-col justify-between items-center w-full ">
+        <div
+          className={`mt-10 flex flex-row flex bg-black rounded-lg overflow-hidden items-center transition-[width] ease-in-out duration-300 ${
+            gameOption === "time" ? "w-[430px]" : "w-[380px]"
+          } `}
+        >
+          {gameOptions.map((option) => {
+            const isActive = option === gameOption;
+            return (
+              <button
+                key={option}
+                onClick={() => {
+                  setGameOption(option);
+                  restart();
+                }}
+                disabled={isActive}
+                className={`
                   px-4 py-2 rounded-lg text-sm transition-all  hover:text-white ease-in-out duration-300
                   ${isActive ? "text-yellow-400 " : "text-gray-500 "}
                   disabled:cursor-default
                 `}
-                >
-                  {option}
-                </button>
-              );
-            })}
-            <div className="border-l-5 border-white h-5 rounded-2xl"></div>
-            {gameOption === "time" ? (
-              <div className="shrink-0 overflow-hidden">
-                {timeOptions.map((option) => {
-                  const isActive = option === time;
+              >
+                {option}
+              </button>
+            );
+          })}
+          <div className="border-l-5 border-white h-5 rounded-2xl"></div>
+          {gameOption === "time" ? (
+            <div className="shrink-0 overflow-hidden">
+              {timeOptions.map((option) => {
+                const isActive = option === time;
 
-                  return (
-                    <button
-                      key={option}
-                      onClick={() => {
-                        setTime(option);
-                        restart();
-                      }}
-                      className={`
+                return (
+                  <button
+                    key={option}
+                    onClick={() => {
+                      setTime(option);
+                      restart();
+                    }}
+                    className={`
                   px-4 py-2 rounded-lg text-sm transition-all hover:text-white ease-in-out duration-300
                   ${isActive ? "text-yellow-400 " : "text-gray-500"}
                   disabled:cursor-default
                  
                 `}
-                    >
-                      {option}
-                    </button>
-                  );
-                })}
-              </div>
-            ) : (
-              <div>
-                {wordNumberOptions.map((option) => {
-                  const isActive = option === wordNumber;
-                  return (
-                    <button
-                      key={option}
-                      onClick={() => {
-                        setWordNumber(option);
-                        restart();
-                      }}
-                      className={`
+                  >
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div>
+              {wordNumberOptions.map((option) => {
+                const isActive = option === wordNumber;
+                return (
+                  <button
+                    key={option}
+                    onClick={() => {
+                      setWordNumber(option);
+                      restart();
+                    }}
+                    className={`
                   px-4 py-2 rounded-lg text-sm transition-all  hover:text-white  ease-in-out duration-300
                   ${isActive ? "text-yellow-400" : "text-gray-500 "}
                   disabled:cursor-default
                 `}
-                    >
-                      {option}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-          <div className="relative w-full flex flex-col">
-            <div className=" absolute left-0 top-[-50px] ">
-              <CountdownTimer
-                isRunning={hasStarted}
-                onFinish={saveResult}
-                time={time}
-              />
-              <ShowResult
-                worda={text}
-                typed={userInput}
-                seconds={time}
-                ifFinished={isFinished}
-              />
+                  >
+                    {option}
+                  </button>
+                );
+              })}
             </div>
+          )}
+        </div>
+        <div className="relative w-full flex flex-col">
+          <div className=" absolute left-0 top-[-50px] ">
+            <CountdownTimer
+              key={`${time}-${gameOption}`}
+              isRunning={hasStarted}
+              onFinish={saveResult}
+              time={time}
+            />
+            <ShowResult
+              worda={text}
+              typed={userInput}
+              seconds={time}
+              ifFinished={isFinished}
+            />
+          </div>
 
-            <div className="relative  overflow-hidden w-full h-[190px] mt-  ">
-              <div className="flex flex-wrap text-gray-500 gap-x-2  overflow-hidden text-[40px] ">
-                {text.map((word, wordIndex) => (
-                  <WordView
-                    key={wordIndex}
-                    word={word}
-                    typed={userInput[wordIndex] ?? ""}
-                    isActive={index === wordIndex}
-                    ref={(el) => {
-                      wordsRefs.current[wordIndex] = el;
-                    }}
-                  />
-                ))}
-              </div>
+          <div className="relative  overflow-hidden w-full h-[190px] mt-  ">
+            <div
+              ref={caretRef}
+              className="absolute w-[2px] h-[42px] bg-yellow-400 transition-transform duration-150 ease-out"
+            />
+
+            <div className="flex flex-wrap text-gray-500 gap-x-2  overflow-hidden text-[40px] ">
+              {text.map((word, wordIndex) => (
+                <WordView
+                  key={wordIndex}
+                  word={word}
+                  typed={userInput[wordIndex] ?? ""}
+                  isActive={index === wordIndex}
+                  ref={(el) => {
+                    wordsRefs.current[wordIndex] = el;
+                  }}
+                />
+              ))}
             </div>
           </div>
         </div>
-        {/* footer heseg */}
-        
       </div>
-  
+      {/* footer heseg */}
+    </div>
   );
 };

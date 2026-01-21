@@ -1,8 +1,6 @@
 export const getClassName = (
   originalCharacter?: string,
   userCharacter?: string,
-  isCurrent?: boolean,
-  isActive?: boolean
 ): string => {
   let style: string = "";
 
@@ -18,10 +16,6 @@ export const getClassName = (
   } else {
     //  buyu buruu bichsn uyd
     style = "text-red-500";
-  }
-
-  if (isActive && isCurrent) {
-    style = style + "border-l-2 border-amber-300";
   }
   return style;
 };
