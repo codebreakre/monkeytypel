@@ -1,15 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useAuth } from "../auth-provider/authProvider";
 
 export const Nav = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  let userName = "";    
-  let user = localStorage.currentUser;
-  if (user) {
-    console.log("faucku");
-    userName = JSON.parse(user).nickName;
-  }
+  const {currentUser} = useAuth();
+  
   return (
     <header className="w-full mt-10 flex flex-row items-center justify-between">
       <div>
@@ -30,12 +25,12 @@ export const Nav = () => {
         </button>
       </div>
       <div className="flex flex-row justify-center ">
-        {isLoggedIn === true ? (
+        {currentUser ? (
           <button
             className="w-6 h-6 mr-2 flex flex-row gap-2"
             onClick={() => navigate("/status")}
           >
-            <p>{userName}</p>
+            <p>{currentUser.nickName}</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -65,7 +60,7 @@ export const Nav = () => {
                 d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
               />
             </svg>
-            <p>{userName}</p>
+            <p>loginSir</p>
           </button>
         )}
       </div>
