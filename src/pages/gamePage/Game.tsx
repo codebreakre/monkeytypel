@@ -272,7 +272,7 @@ export const Game = () => {
           </div>
         </div>
       </div>
-      {/* footer heseg */}
+   
     </div>
   );
 };
