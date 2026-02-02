@@ -25,6 +25,8 @@ export const Game = () => {
   const [userInput, setUserInput] = useState<string[]>([""]);
   const wordsRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const caretRef = useRef<HTMLDivElement>(null);
+  const fixedMovementX = 24;
+  const range = useRef(0);
 
   const saveResult = () => {
     if (!currentUser) {
@@ -133,28 +135,34 @@ export const Game = () => {
     if (!activeWord) return;
     activeWord.scrollIntoView({ behavior: "smooth", block: "center" });
 
-
     const activeLetter = activeWord.children[
-      userInput[index]?.length ?? 0
+      userInput[index]?.length 
     ] as HTMLElement;
 
-    if ( !caretRef.current) return;
-    if(!activeLetter) {
-    const parentRect = activeWord!.getBoundingClientRect();
-      caretRef.current.style.transform = `
-    translate(${ parentRect.left + parentRect.width}px,
-              ${ parentRect.top}px)
-  `; 
+    if (!caretRef.current) return;
+    if (!activeLetter) {
+        if (userInput[index].length >= text[index].length) {
+          caretRef.current.style.transform = `
+    translateX(${range.current+fixedMovementX}px)
+  `;
+          range.current += fixedMovementX;
+        } else {
+          caretRef.current.style.transform = `
+    translateX(${range.current-fixedMovementX}px)
+  `;
+          range.current -= fixedMovementX;
+        }
+      
     } else {
+      const rect = activeLetter.getBoundingClientRect();
+      const parentRect = activeWord.parentElement!.getBoundingClientRect();
 
-    const rect = activeLetter.getBoundingClientRect();
-    const parentRect = activeWord.parentElement!.getBoundingClientRect();
-
-    caretRef.current.style.transform = `
+      caretRef.current.style.transform = `
     translate(${rect.left - parentRect.left}px,
               ${rect.top - parentRect.top}px)
-  `;}
-   
+  `;
+      range.current =rect.left - parentRect.left
+    }
   }, [index, userInput]);
 
   return (
@@ -272,7 +280,6 @@ export const Game = () => {
           </div>
         </div>
       </div>
-   
     </div>
   );
 };
