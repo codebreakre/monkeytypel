@@ -26,8 +26,6 @@ export const Game = () => {
   const wordsRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const caretRef = useRef<HTMLDivElement>(null);
   const fixedMovementX = 24;
-  const range = useRef(0);
-  const writtenLetter = useRef(0);
 
   const saveResult = () => {
     if (!currentUser) {
@@ -136,38 +134,15 @@ export const Game = () => {
     if (!activeWord) return;
     activeWord.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    const activeLetter = activeWord.children[
-      userInput[index]?.length
-    ] as HTMLElement;
 
     if (!caretRef.current) return;
 
     let xMovement = 0;
     let yMovement = 0;
-      const activeWordRect = activeWord.getBoundingClientRect();
-      xMovement = activeWordRect.left - activeWord.parentElement!.getBoundingClientRect().left;
-      yMovement = activeWordRect.top - activeWord.parentElement!.getBoundingClientRect().top;
-    if (activeLetter) {
-      const rect = activeLetter.getBoundingClientRect();
-      const parentRect = activeWord.parentElement!.getBoundingClientRect();
-      xMovement = rect.left - parentRect.left;
+      xMovement = activeWord.getBoundingClientRect().left - activeWord.parentElement!.getBoundingClientRect().left;
+      yMovement = activeWord.getBoundingClientRect().top - activeWord.parentElement!.getBoundingClientRect().top;
+      xMovement = xMovement + fixedMovementX*(userInput[index].length);
       caretRef.current.style.transform = `translate(${xMovement}px, ${yMovement}px)`;
-      range.current = xMovement;
-    } else {
-
-      const margin = userInput[index].length - text[index].length;
-      if(margin >= writtenLetter.current){
-        xMovement = range.current + fixedMovementX;
-        writtenLetter.current = margin;
-        range.current = xMovement;
-      } else {
-        xMovement = range.current - fixedMovementX;
-        writtenLetter.current = margin;
-        range.current = xMovement;
-      }
-      caretRef.current.style.transform = `translate(${xMovement}px, ${yMovement}px)`;
-
-    }
   }, [index, userInput]);
 
   return (
