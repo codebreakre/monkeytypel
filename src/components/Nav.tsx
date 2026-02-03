@@ -10,7 +10,8 @@ export const Nav = () => {
       <div>
         <button
           onClick={() => navigate("/")}
-          className="flex flex-row items-center justify-center"
+          className="flex flex-row items-center justify-center cursor-pointer"
+          title="HomePage"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +44,7 @@ export const Nav = () => {
           </button>
         ) : (
           <button
-            className="mr-2 flex flex-row gap-2 "
+            className="mr-2 flex flex-row gap-2   cursor-pointer"
             onClick={() => navigate("/login")}
           >
             <svg

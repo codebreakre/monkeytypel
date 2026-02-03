@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <div className="w-full h-1/10 flex justify-center mb-10 text-[12px]">
+    <div className="w-full h-1/10 flex justify-center mb-10 text-[12px] cursor-default">
       <footer className="flex flex-col justify-between items-center text-[#646669] w-full h-full">
         <div className="flex flex-col justify-center items-center gap-2">
           <div className="flex flex-row  gap-2 justify-center ">

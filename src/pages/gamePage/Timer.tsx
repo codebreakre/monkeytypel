@@ -41,5 +41,5 @@ export function CountdownTimer({ isRunning, onFinish, time }: Props) {
 
    if (!isRunning || timeLeft === 0) return null;
 
-  return <div className="text-4xl mb-4 text-[#D3DAD9] font-bold">{timeLeft}</div>;
+  return <div>{timeLeft}</div>;
 }

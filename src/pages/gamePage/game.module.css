@@ -1,0 +1,30 @@
+.caret {
+    position: absolute;
+    width: 3px;
+    height: 42px;
+    top: 10px;
+    background-color: #facc15; /* yellow-400 */
+    transition: transform 0.2s ease-out;
+    border-radius: 1rem; /* rounded-2xl */
+
+}
+
+.caretPaused {
+      position: absolute;
+    width: 3px;
+    height: 42px;
+    top: 10px;
+    background-color: #facc15; /* yellow-400 */
+    transition: transform 0.2s ease-out;
+    border-radius: 1rem; /* rounded-2xl */
+    animation: blink 1s ease-in-out 0s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}

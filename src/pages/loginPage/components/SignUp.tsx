@@ -2,6 +2,7 @@ import type { User } from "../../../types";
 import { useState } from "react";
 import { useAuth } from "../../../auth-provider/authProvider";
 import { notifications } from "@mantine/notifications";
+import { supabase } from "../../../supabase-client";
 
 export const SignUp = () => {
   const [registerName, setRegisterName] = useState("");

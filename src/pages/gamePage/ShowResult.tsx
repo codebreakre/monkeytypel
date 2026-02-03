@@ -1,27 +1,28 @@
+import { calculateRaw } from "./resultCalculation/Raw";
+import { calculateAccuracy } from "./resultCalculation/Accuracy";
+import { calculateConsistency } from "./resultCalculation/Consistency";
+import { calculateWPM } from "./resultCalculation/WPM";
+
 type Props = {
   worda: string[];
   typed: string[];
   seconds: number;
-  ifFinished: boolean;
 };
 
-export function ShowResult({ worda, typed, seconds, ifFinished }: Props) {
+export function ShowResult({ worda, typed, seconds }: Props) {
 
-    let count = 0;
-
-  worda.forEach((word, index) => {
-    if (word === typed[index]) {
-      count++;
-    }
-  });
-  
-  if (ifFinished) {
+    const WPM = calculateWPM(worda, typed, seconds);
+    const raw = calculateRaw(worda, seconds);
+    const acc = calculateAccuracy(worda, typed);
    return (
     <span className="text-4xl mb-4 text-[#D3DAD9] font-bold">
-      You wrote {count} words in {seconds} seconds
+      <p>Your WPM is {WPM}</p>
+      <p>Your raw is {raw}</p>
+      <p>Your acc is {acc}%</p>
+      <p>seconds {seconds}</p>
     </span>
   );
-  }
+  
  return null;
 
 }

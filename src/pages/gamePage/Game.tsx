@@ -7,6 +7,8 @@ import type { Result } from "../../types";
 import { callWords } from "../../api/hooks/callWords";
 import { ignoredKeys } from "./arrayValues";
 import { useAuth } from "../../auth-provider/authProvider";
+import styles from "./Game.module.css";
+import { WordCounter } from "./wordCounter";
 
 const timeOptions = [15, 30, 60, 90, 120];
 const wordNumberOptions = [10, 25, 50, 100];
@@ -26,8 +28,32 @@ export const Game = () => {
   const wordsRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const caretRef = useRef<HTMLDivElement>(null);
   const fixedMovementX = 24;
+  const timer = useRef(0);
+  const timerRef = useRef<number | null>(null);
 
-  const saveResult = () => {
+  const startTimer = () => {
+    if (timerRef.current) return;
+    timer.current = 0;
+
+    timerRef.current = window.setInterval(() => {
+      timer.current += 1;
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const saveWordResult = () => {
+    stopTimer();
+    console.log("Elapsed seconds:", timer.current);
+    setFinished(true);
+  };
+
+  const saveTimeResult = () => {
     if (!currentUser) {
       setFinished(true);
       return;
@@ -91,14 +117,20 @@ export const Game = () => {
   }
 
   const restart = () => {
+    stopTimer(); // ✅ Stop timer if running
+    timer.current = 0;
     setIndex(0);
     setUserInput([""]);
     setHasStarted(false);
     setFinished(false);
     refetch();
   };
+
   function startGame(): void {
     setHasStarted(true);
+    if (gameOption === "words") {
+      startTimer();
+    }
   }
 
   function handleSpace(): void {
@@ -130,28 +162,38 @@ export const Game = () => {
   }
 
   useLayoutEffect(() => {
+    if (
+      userInput.length === text.length &&
+      userInput[index].length === text[index].length
+    ) {
+      setFinished(true);
+      return;
+    }
     const activeWord = wordsRefs.current[index];
     if (!activeWord) return;
     activeWord.scrollIntoView({ behavior: "smooth", block: "center" });
-
 
     if (!caretRef.current) return;
 
     let xMovement = 0;
     let yMovement = 0;
-      xMovement = activeWord.getBoundingClientRect().left - activeWord.parentElement!.getBoundingClientRect().left;
-      yMovement = activeWord.getBoundingClientRect().top - activeWord.parentElement!.getBoundingClientRect().top;
-      xMovement = xMovement + fixedMovementX*(userInput[index].length);
-      caretRef.current.style.transform = `translate(${xMovement}px, ${yMovement}px)`;
+    xMovement =
+      activeWord.getBoundingClientRect().left -
+      activeWord.parentElement!.getBoundingClientRect().left;
+    yMovement =
+      activeWord.getBoundingClientRect().top -
+      activeWord.parentElement!.getBoundingClientRect().top;
+    xMovement = xMovement + fixedMovementX * userInput[index].length;
+    caretRef.current.style.transform = `translate(${xMovement}px, ${yMovement}px)`;
   }, [index, userInput]);
 
   return (
-    <div className="w-full flex flex-col  justify-between h-full items-center mt-5">
+    <div className="w-full flex flex-col  justify-between h-full items-center mt-5 cursor-default">
       <div className="h-1/2 flex flex-col justify-between items-center w-full ">
         <div
-          className={`mt-10 flex flex-row flex bg-black rounded-lg overflow-hidden items-center transition-[width] ease-in-out duration-300 ${
+          className={`mt-10 flex flex-row flex bg-black rounded-lg overflow-hidden items-center transition-[width] ease-in-out duration-300  ${
             gameOption === "time" ? "w-[430px]" : "w-[380px]"
-          } `}
+          } ${isFinished || hasStarted ? "opacity-0" : ""} `}
         >
           {gameOptions.map((option) => {
             const isActive = option === gameOption;
@@ -223,41 +265,54 @@ export const Game = () => {
           )}
         </div>
         <div className="relative w-full flex flex-col">
-          <div className=" absolute left-0 top-[-50px] ">
-            <CountdownTimer
-              key={`${time}-${gameOption}`}
-              isRunning={hasStarted}
-              onFinish={saveResult}
-              time={time}
-            />
+          {isFinished ? (
             <ShowResult
               worda={text}
               typed={userInput}
-              seconds={time}
-              ifFinished={isFinished}
+              seconds={gameOption === "time" ? time : timer.current}
             />
-          </div>
+          ) : (
+            <>
+              <div className=" absolute left-0 top-[-50px] text-4xl mb-4 text-[#D3DAD9] font-bold ">
+                {gameOption === "time" ? (
+                  <CountdownTimer
+                    key={`${time}-${gameOption}`}
+                    isRunning={hasStarted}
+                    onFinish={saveTimeResult}
+                    time={time}
+                  />
+                ) : (
+                  <WordCounter
+                    userInput={userInput}
+                    hasStarted={hasStarted}
+                    wordReach={wordNumber}
+                    onFinish={saveWordResult}
+                  />
+                )}
+              </div>
 
-          <div className="relative  overflow-hidden w-full h-[190px] mt-  ">
-            <div
-              ref={caretRef}
-              className="absolute w-[2px] h-[42px] bg-yellow-400 transition-transform duration-150 ease-out"
-            />
-
-            <div className="flex flex-wrap text-gray-500 gap-x-2  overflow-hidden text-[40px] ">
-              {text.map((word, wordIndex) => (
-                <WordView
-                  key={wordIndex}
-                  word={word}
-                  typed={userInput[wordIndex] ?? ""}
-                  isActive={index === wordIndex}
-                  ref={(el) => {
-                    wordsRefs.current[wordIndex] = el;
-                  }}
+              <div className="relative  overflow-hidden w-full h-[190px] mt-  ">
+                <div
+                  ref={caretRef}
+                  className={hasStarted ? styles.caret : styles.caretPaused}
                 />
-              ))}
-            </div>
-          </div>
+
+                <div className="flex flex-wrap text-gray-500 gap-x-2  overflow-hidden text-[40px] ">
+                  {text.map((word, wordIndex) => (
+                    <WordView
+                      key={wordIndex}
+                      word={word}
+                      typed={userInput[wordIndex] ?? ""}
+                      isActive={index === wordIndex}
+                      ref={(el) => {
+                        wordsRefs.current[wordIndex] = el;
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

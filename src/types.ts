@@ -1,13 +1,24 @@
 export interface User{
+    user_id: string;
+    joined_date: string;
     nickName: string;
-    averageWPM: number;
-    results: Result[]
+    level: number;
+    overallAttempts: number;
+    completedAttempts: number;
+    typedTime: number;
+    averageWPM:number;
+    averageRaw: number;
+    averageAccuracy: number;
+    averageConsistency: number;
 }
 
 export interface Result{
-    text: string[],
-    userInput: string[],
-    seconds: number,
-    correctWords: number,
-    WPM: number
+    user_id:string
+    mode: string;
+    wpm: number;
+    raw: number;
+    acc: number;
+    con: number;
+    time: number;
+    word: number;
 }

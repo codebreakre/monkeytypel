@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { signIn } = useAuth();
   const [enteringName, setEnteringName] = useState("");
 
   const loginHandler = () => {
@@ -42,7 +42,7 @@ export const SignIn = () => {
         login
       </p>
       <div className="text-white flex flex-row justify-between ">
-        <button className="w-47/100 h-10 bg-[#2c2e31] flex justify-center items-center rounded-lg text-[#D1D0C5]">
+        <button className="w-47/100 h-10 bg-[#2c2e31] flex justify-center items-center rounded-lg text-[#D1D0C5] cursor-pointer hover:bg-[#D1D0C5] hover:text-[#2c2e31] transition-colors ease-in-out duration-300">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -53,7 +53,7 @@ export const SignIn = () => {
             <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z" />
           </svg>
         </button>
-        <button className="w-47/100  h-10 bg-[#2c2e31] flex justify-center items-center rounded-lg text-[#D1D0C5]">
+        <button className="w-47/100  h-10 bg-[#2c2e31] flex justify-center items-center rounded-lg text-[#D1D0C5] cursor-pointer hover:bg-[#D1D0C5] hover:text-[#2c2e31] transition-colors ease-in-out duration-300">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -94,7 +94,7 @@ export const SignIn = () => {
             clipRule="evenodd"
           />
         </svg>
-        <label className="flex items-center gap-2 cursor-pointer select-none text-[#D1D0C5]">
+        <label className="flex items-center gap-2 select-none text-[#D1D0C5]">
           <input type="checkbox" className="peer sr-only" />
 
           <span
@@ -121,7 +121,7 @@ export const SignIn = () => {
 
         <button
           onClick={loginHandler}
-          className="bg-[#2c2e31] text-[#D1D0C5] rounded-lg h-9 flex flex-row justify-center items-center hover:bg-[#D1D0C5] hover:text-[#2c2e31] transition-colors ease-in-out duration-300"
+          className="bg-[#2c2e31] text-[#D1D0C5] rounded-lg h-9 flex flex-row justify-center items-center hover:bg-[#D1D0C5] hover:text-[#2c2e31] transition-colors ease-in-out duration-300 cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

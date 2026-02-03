@@ -6,16 +6,16 @@ export const getClassName = (
 
   if (!originalCharacter) {
     // Extra bichigdsen uyed iishee orno
-    style = "text-yellow-500";
+    style = "text-[#ff3333]";
   } else if (!userCharacter) {
     // hereglech bichij amjaagui bgaa characteruud ingej render hiigdene
     style = "";
   } else if (originalCharacter === userCharacter) {
     // zuv bichigdsen character
-    style = "text-white";
+    style = "text-[#ffffff]";
   } else {
     //  buyu buruu bichsn uyd
-    style = "text-red-500";
+    style = "text-[#ef4444]";
   }
   return style;
 };
