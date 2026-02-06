@@ -1,36 +1,40 @@
 import type { User } from "../../../types";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useAuth } from "../../../auth-provider/authProvider";
-import { notifications } from "@mantine/notifications";
-import { supabase } from "../../../supabase-client";
+
 
 export const SignUp = () => {
-  const [registerName, setRegisterName] = useState("");
-  const { register } = useAuth();
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailVerification, setEmailVerification] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordVerification, setPasswordVerification] = useState("");
+  
+  const isEmailValid =email.includes("@");
+  const isEmailMatch = email === emailVerification; 
+  const isPasswordValid= password.length > 6;
+  const isPasswordMatch = password === passwordVerification;  
 
-  const registerHandler = () => {
-    let alreadyExists = false;
-    const newUser: User = {
-      nickName: registerName,
-      averageWPM: 0,
-      results: [],
-    };
-    alreadyExists = register(newUser);
-    if (alreadyExists) {
-      setRegisterName("");
-      notifications.show({
-        title: "За бүртгүүлсэн2",
-        position: "top-center",
-        message: "Одоо нэвтэрч орно доо! 🌟",
-      });
-      return;
-    }
-    notifications.show({
-      title: "Ийм нэртэй хэрэглэгч байгаад байна",
-      position: "top-center",
-      message: "Арай өөр нэрээр бүртгүүлээд үзэх үү?",
-    });
-  };
+  const canSubmit = 
+    userName.trim() != ""&&
+    isEmailValid &&
+    isEmailMatch &&
+    isPasswordValid &&
+    isPasswordMatch;
+
+  const { signUp } = useAuth();
+
+const registerHandler = async () => {
+  console.log("clicked");
+  const success = await signUp(email, password, userName);
+
+  if (!success) {
+    console.log("Register failed");
+    return;
+  }
+
+  console.log("Register success");
+};
 
   return (
     <section className="w-68">
@@ -55,32 +59,41 @@ export const SignUp = () => {
         <input
           type="text"
           placeholder="username"
-          value={registerName}
-          onChange={(e) => setRegisterName(e.target.value)}
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
           className="bg-[#2c2e31] text-[white] rounded-lg pl-2 h-9 w-full placeholder-[#646669]  focus:outline-none focus:ring-2 focus:ring-white caret-amber-300 "
         />
         <input
           type="email"
           placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="bg-[#2c2e31] text-[white]  rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
         />
         <input
           type="email"
           placeholder="verify email"
+          value={emailVerification}
+          onChange={(e) => setEmailVerification(e.target.value)}
           className="bg-[#2c2e31] text-[white]  rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
         />
         <input
           type="password"
           placeholder="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="bg-[#2c2e31] text-[white]  rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
         />
         <input
           type="password"
           placeholder="verify password"
+          value={passwordVerification}
+          onChange={(e) => setPasswordVerification(e.target.value)}
           className="bg-[#2c2e31] text-[white] rounded-lg pl-2 h-9 w-full placeholder-[#646669] focus:outline-none focus:ring-2 focus:ring-white caret-amber-300"
         />
         <button
           onClick={registerHandler}
+          disabled = {!canSubmit}
           className="bg-[#303235] text-[#646669] rounded-lg h-9 flex flex-row justify-center items-center hover:bg-[#646669] hover:text-[#303235] transition-color ease-in-out duration-300"
         >
           <svg

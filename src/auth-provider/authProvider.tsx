@@ -10,7 +10,7 @@ import { supabase } from "../supabase-client";
 
 type AuthContextValue = {
   currentUser: User | null;
-  signUp: (email: string, password: string, userName: string) => Promise<boolean>;
+  signUp: (email: string, password: string, userName:string) => Promise<boolean>;
   signIn: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
 };
@@ -60,24 +60,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string, userName: string) => {
     // 1. Check if userName is taken
-    const { data: existingUser } = await supabase
-      .from('users')
-      .select('nickName')
-      .eq('nickName', userName)
-      .single();
-
-    if (existingUser) {
-      console.log("Username already taken");
-      return false;
-    }
-
-    // 2. Create auth account
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+  email,
+  password,
+  options: {
+    data: { nickName: userName }
+  }
+});
+  
     
     if (error) {
       console.log("Error signing up:", error.message);
       return false;
     }
+    console.log("the data is ", data);
     return true;
   };
 
