@@ -15,14 +15,13 @@ const wordNumberOptions = [10, 25, 50, 100];
 const gameOptions = ["time", "words"];
 
 export const Game = () => {
-  const { currentUser, updateCurrentUser } = useAuth();
   const [time, setTime] = useState(30);
   const [wordNumber, setWordNumber] = useState(100);
   const [gameOption, setGameOption] = useState("time");
   const [hasStarted, setHasStarted] = useState(false);
   const [isFinished, setFinished] = useState(false);
 
-  const { data: text = [], isPending, refetch } = callWords(wordNumber);
+  const text = ["dawdawd", "dawdawd", "dawdawd", "dawdawd", "dawdawd", "dawdawd", "dawdawd"];
   const [index, setIndex] = useState(0);
   const [userInput, setUserInput] = useState<string[]>([""]);
   const wordsRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -53,40 +52,12 @@ export const Game = () => {
     setFinished(true);
   };
 
-  const saveTimeResult = () => {
-    if (!currentUser) {
-      setFinished(true);
-      return;
-    }
-    let correctWord = 0;
-    text.forEach((word, index) => {
-      if (word === userInput[index]) {
-        correctWord++;
-      }
-    });
-
-    let result: Result = {
-      text: text,
-      userInput: userInput,
-      seconds: time,
-      correctWords: correctWord,
-      WPM: Math.round((correctWord / time) * 60 * 10) / 10,
-    };
-
-    currentUser.results.push(result);
-    updateCurrentUser(currentUser);
-    setFinished(true);
-  };
-
   useWindowEvent("keydown", handler);
 
   const BACKSPACE = "Backspace";
   const SPACE = " ";
 
   function handler(event: KeyboardEvent) {
-    if (isPending) {
-      return;
-    }
     if (event.key === "Tab") {
       event.preventDefault();
       restart();
@@ -123,7 +94,6 @@ export const Game = () => {
     setUserInput([""]);
     setHasStarted(false);
     setFinished(false);
-    refetch();
   };
 
   function startGame(): void {
@@ -274,21 +244,7 @@ export const Game = () => {
           ) : (
             <>
               <div className=" absolute left-0 top-[-50px] text-4xl mb-4 text-[#D3DAD9] font-bold ">
-                {gameOption === "time" ? (
-                  <CountdownTimer
-                    key={`${time}-${gameOption}`}
-                    isRunning={hasStarted}
-                    onFinish={saveTimeResult}
-                    time={time}
-                  />
-                ) : (
-                  <WordCounter
-                    userInput={userInput}
-                    hasStarted={hasStarted}
-                    wordReach={wordNumber}
-                    onFinish={saveWordResult}
-                  />
-                )}
+              
               </div>
 
               <div className="relative  overflow-hidden w-full h-[190px] mt-  ">
